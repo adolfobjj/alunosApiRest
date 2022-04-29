@@ -11,14 +11,20 @@ public class Alunos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    private String usuario;
+    @Column
+    private String senha;
+    @Column
+    private String email;
     @Column
     private String nome;
     @Column
     private String sobrenome;
     @Column
     private Integer idade;
-    @Column
-    private String curso;
+
 
 
 }

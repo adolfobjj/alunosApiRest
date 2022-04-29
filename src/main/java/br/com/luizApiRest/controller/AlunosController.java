@@ -1,11 +1,13 @@
 package br.com.luizApiRest.controller;
 
+import br.com.luizApiRest.dto.AlunosDto;
 import br.com.luizApiRest.model.Alunos;
-import br.com.luizApiRest.repository.RepositoryAlunos;
+import br.com.luizApiRest.repository.AlunosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -13,11 +15,18 @@ import java.util.List;
 @RequestMapping("/alunos")
 public class AlunosController {
     @Autowired
-    private RepositoryAlunos repositoryAlunos;
+    private AlunosRepository repositoryAlunos;
 
     @GetMapping
-    public List<Alunos> listaAlunos(){
-        return repositoryAlunos.findAll();
+    public List<AlunosDto> listaAlunos(){
+        List<Alunos> alunos = repositoryAlunos.findAll();
+        return  AlunosDto.convert(alunos);
+
+    }
+    @GetMapping("/alunoId")
+    public Alunos listaId(@PathVariable Long alunoId){
+        return repositoryAlunos.findById(alunoId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não encontrado."));
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
