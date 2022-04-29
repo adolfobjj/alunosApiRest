@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +15,7 @@ public class AlunosDto {
 
     private Long id;
     private String usuario;
+    private String cpf;
     private String email;
     private String nome;
     private String sobrenome;
@@ -24,9 +24,10 @@ public class AlunosDto {
     public AlunosDto(Alunos alunos){
         this.id = alunos.getId();
         this.usuario = alunos.getUsuario();
+        this.cpf  = alunos.getCpf();
         this.email = alunos.getEmail();
         this.nome = alunos.getNome();
-        this.sobrenome = alunos.getSobrenome();
+        this.sobrenome = alunos.getSobreNome();
         this.idade = alunos.getIdade();
     }
     public static List<AlunosDto> convert(List<Alunos> alunos){
