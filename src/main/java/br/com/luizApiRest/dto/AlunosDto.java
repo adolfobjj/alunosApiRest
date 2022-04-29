@@ -1,9 +1,11 @@
 package br.com.luizApiRest.dto;
 
 import br.com.luizApiRest.model.Alunos;
+import br.com.luizApiRest.model.Cursos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +22,7 @@ public class AlunosDto {
     private String nome;
     private String sobrenome;
     private Integer idade;
+    private Cursos cursos;
 
     public AlunosDto(Alunos alunos){
         this.id = alunos.getId();
@@ -30,8 +33,9 @@ public class AlunosDto {
         this.sobrenome = alunos.getSobreNome();
         this.idade = alunos.getIdade();
     }
-    public static List<AlunosDto> convert(List<Alunos> alunos){
-        return alunos.stream().map(AlunosDto::new).collect(Collectors.toList());
+    public static Page<AlunosDto> convert(Page<Alunos> alunos){
+        return alunos.map(AlunosDto::new);
+
     }
 
 }

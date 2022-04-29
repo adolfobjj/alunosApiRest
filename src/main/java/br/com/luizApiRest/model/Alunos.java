@@ -41,6 +41,9 @@ public class Alunos {
     @Column @CPF @NotNull @NotEmpty
     private String cpf;
 
+    @ManyToOne
+    private Cursos cursos;
+
 
 
 }

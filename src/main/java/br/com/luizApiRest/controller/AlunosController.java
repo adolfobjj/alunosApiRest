@@ -1,56 +1,80 @@
 package br.com.luizApiRest.controller;
 
+import br.com.luizApiRest.repository.AlunosRepository;
 import br.com.luizApiRest.dto.AlunosDto;
 import br.com.luizApiRest.model.Alunos;
-import br.com.luizApiRest.repository.AlunosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/alunos")
 public class AlunosController {
+
     @Autowired
-    private AlunosRepository repositoryAlunos;
+    private AlunosRepository alunosRepository;
 
     @GetMapping
-    public List<AlunosDto> listaAlunos(){
-        List<Alunos> alunos = repositoryAlunos.findAll();
-        return  AlunosDto.convert(alunos);
+    @Cacheable(value = "listaAlunos", sync = false)
+    public Page<AlunosDto> listaAlunos(@RequestParam(required = false) String aluno,
+                                       @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+                                               Pageable pagainacao){
 
+        Page<Alunos> alunos = alunosRepository.findAll(pagainacao);
+        return AlunosDto.convert(alunos);
     }
-    @GetMapping("/alunoId")
-    public Alunos listaId(@PathVariable Long alunoId){
-        return repositoryAlunos.findById(alunoId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não encontrado."));
+
+    @GetMapping("/{alunoId}")
+    public ResponseEntity<AlunosDto> buscarPorId(@PathVariable Long alunoId){
+        Optional<Alunos> alunos = alunosRepository.findById(alunoId);
+        if (alunos.isPresent()){
+            return  ResponseEntity.ok(new AlunosDto(alunos.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Alunos add(@RequestBody Alunos alunos){
-        return repositoryAlunos.save(alunos);
+    @CacheEvict(value = "listaAlunos", allEntries = true)
+    public Alunos add(@Valid @RequestBody Alunos alunos){
+        return alunosRepository.save(alunos);
     }
+
     @PutMapping("/{alunoId}")
+    @CacheEvict(value = "listaAlunos", allEntries = true)
     public ResponseEntity<Alunos> update(@PathVariable Long alunoId, @RequestBody Alunos alunos){
-        if(!repositoryAlunos.existsById(alunoId)){
-            return  ResponseEntity.notFound().build();
+
+        if(!alunosRepository.existsById(alunoId)){
+            return ResponseEntity.notFound().build();
         }
 
         alunos.setId(alunoId);
-        alunos = repositoryAlunos.save(alunos);
+        alunos = alunosRepository.save(alunos);
         return ResponseEntity.ok(alunos);
     }
-    @DeleteMapping("/{alunoId}")
-    public ResponseEntity<Alunos> delete(@PathVariable Long alunoId){
 
-        if(!repositoryAlunos.existsById(alunoId)){
-            return  ResponseEntity.notFound().build();
+    @DeleteMapping("/{alunoId}")
+    @CacheEvict(value = "listaAlunos", allEntries = true)
+    public ResponseEntity<Void> delete(@PathVariable Long alunoId){
+
+        if(!alunosRepository.existsById(alunoId)){
+            return ResponseEntity.notFound().build();
         }
 
-        repositoryAlunos.deleteById(alunoId);
+        alunosRepository.deleteById(alunoId);
         return ResponseEntity.noContent().build();
     }
+
 }
