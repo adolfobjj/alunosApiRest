@@ -38,7 +38,7 @@ public class Alunos {
     @Column
     private Integer idade;
 
-    @Column @CPF @NotNull @NotEmpty
+    @Column @NotNull @NotEmpty
     private String cpf;
 
     @ManyToOne

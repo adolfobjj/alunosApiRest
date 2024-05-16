@@ -25,7 +25,7 @@ public class Cursos {
     @Column @NotEmpty @NotNull
     private String curso;
 
-    @Column @NotEmpty @NotNull
+    @Column @NotNull
     private LocalDate dataIncio;
 
     @Column
