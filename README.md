@@ -61,17 +61,17 @@ Se desejar contribuir com o projeto, sinta-se à vontade para enviar pull reques
 
 Agradecemos a todos os contribuidores e apoiadores deste projeto.
 
-exemplos : <br>
-Primeiro crie um curso: <br>
-http://localhost:8080/api/cursos <br>
+#Exemplos : <br>
+Primeiro crie um curso: <br><br>
+http://localhost:8080/api/cursos <br><br>
 {<br>
     "curso": "Engenharia de Software",<br>
     "dataIncio": "2022-01-01",<br>
     "dataConclusao": "2026-01-01",<br>
     "nota": 9<br>
-}<br>
-Depois o aluno: <br>
-http://localhost:8080/alunos <br>
+}<br><br>
+Depois o aluno: <br><br>
+http://localhost:8080/alunos <br><br>
 {<br>
     "usuario": "joaosilva",<br>
     "senha": "senha123",<br>
@@ -87,4 +87,4 @@ http://localhost:8080/alunos <br>
         "dataConclusao": "2026-01-01",<br>
         "nota": 9<br>
     }<br>
-}<br>
+}<br><br>
