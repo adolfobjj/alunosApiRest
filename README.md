@@ -61,7 +61,7 @@ Se desejar contribuir com o projeto, sinta-se à vontade para enviar pull reques
 
 Agradecemos a todos os contribuidores e apoiadores deste projeto.
 
-#Exemplos : <br>
+## Exemplos : <br>
 Primeiro crie um curso: <br><br>
 http://localhost:8080/api/cursos <br><br>
 {<br>
@@ -88,3 +88,16 @@ http://localhost:8080/alunos <br><br>
         "nota": 9<br>
     }<br>
 }<br><br>
+# Busca por cpf <br>
+http://localhost:8080/alunos/cpf/12345678900 <br>
+Retorno: <br><br>
+{<br>
+    "id": 1,<br>
+    "usuario": "joaosilva",<br>
+    "cpf": "12345678900",<br>
+    "email": "joao.silva@example.com",<br>
+    "nome": "João",<br>
+    "sobrenome": "Silva",<br>
+    "idade": 20,<br>
+    "cursos": null<br>
+}<br>
