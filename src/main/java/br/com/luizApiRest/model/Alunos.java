@@ -44,6 +44,6 @@ public class Alunos {
     @ManyToOne
     private Cursos cursos;
 
-
-
+    public Alunos() {
+    }
 }

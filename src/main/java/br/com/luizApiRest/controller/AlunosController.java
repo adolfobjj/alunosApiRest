@@ -44,6 +44,17 @@ public class AlunosController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<AlunosDto> buscarAlunoPorCpf(@PathVariable String cpf) {
+        Optional<Alunos> alunoOptional = alunosRepository.findByCpf(cpf);
+        if (alunoOptional.isPresent()) {
+            Alunos aluno = alunoOptional.get();
+            AlunosDto alunoDto = new AlunosDto(aluno);
+            return ResponseEntity.ok(alunoDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
